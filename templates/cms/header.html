@@ -1,0 +1,33 @@
+
+<header class="navbar">
+    <a href="/" class="brand">
+        <span class="brand-icon">N</span>
+        <span>NoteWise <span class="brand-ai">AI</span></span>
+    </a>
+
+    <nav class="nav-links">
+        <a href="/">Home</a>
+        <a href="/features/">Features</a>
+        <a href="/how-it-works/">How It Works</a>
+        <a href="/about/">About</a>
+    </nav>
+
+    <div class="nav-actions">
+        {% if user.is_authenticated %}
+            <div class="user-menu">
+                <span class="user-name">
+                    {{ user.first_name|default:user.username }}
+                </span>
+                <form method="POST" action="/signout/">
+                    {% csrf_token %}
+                    <button type="submit" class="signout-btn">
+                        Sign Out
+                    </button>
+                </form>
+            </div>
+        {% else %}
+            <a href="/signin/" class="login-btn">Log In</a>
+            <a href="/signup/" class="primary-btn">Get Started ↗</a>
+        {% endif %}
+    </div>
+</header>

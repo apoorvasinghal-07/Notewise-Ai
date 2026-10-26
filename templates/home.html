@@ -1,0 +1,447 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title|default:"NoteWise AI | Smart Study Workspace & Revision Engine" }}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    {% include 'cms/header.html' %}
+
+    <main>
+        <!-- HERO SECTION WITH INTERACTIVE LIVE DEMO PREVIEW -->
+        <section class="home-hero" style="min-height: auto; padding: 70px 5% 40px;">
+            <div class="hero-split-grid">
+                <div class="hero-left-content">
+                    <div class="hero-badge-pill">
+                        <span class="pulsing-dot"></span>
+                        <span>AI-Powered Active Recall · Powered by Gemini</span>
+                    </div>
+
+                    <h1 style="margin: 12px 0 16px; font-size: clamp(38px, 4.8vw, 62px); line-height: 1.14; letter-spacing: -1.5px;">
+                        Study smarter.<br>
+                        <span class="gradient-headline">Achieve more.</span>
+                    </h1>
+
+                    <p style="max-width: 560px; color: #64748b; font-size: 16.5px; line-height: 1.8; margin: 0 0 12px;">
+                        Transform lengthy PDFs and lecture notes into interactive flashcards,
+                        auto-scored smart quizzes, structured exam answers, and personalized revision plans in seconds.
+                    </p>
+
+                    <div class="hero-actions-group">
+                        <a href="/features/" class="btn-glow-primary">
+                            <span>Open Your Study Space</span>
+                            <span style="font-size: 17px;">→</span>
+                        </a>
+                        <a href="#interactive-demo" class="btn-outline-glass">
+                            <span>Interactive Demo</span>
+                            <span>⚡</span>
+                        </a>
+                    </div>
+
+                    <div class="hero-note" style="margin-top: 24px;">
+                        <span>✦</span> 100% Grounded in your notes · Zero Hallucinations · Free to use
+                    </div>
+                </div>
+
+                <!-- RIGHT: LIVE INTERACTIVE WORKSPACE PREVIEW -->
+                <div class="interactive-demo-card" id="interactive-demo">
+                    <div class="demo-card-header">
+                        <div class="demo-mac-dots">
+                            <span class="mac-dot red"></span>
+                            <span class="mac-dot yellow"></span>
+                            <span class="mac-dot green"></span>
+                        </div>
+                        <span class="demo-header-title">
+                            <span>⚡ NoteWise AI Studio</span>
+                            <span style="font-size: 10px; color: #94a3b8;">· Click tabs to interact</span>
+                        </span>
+                        <span style="font-size: 11px; font-weight: 700; color: #6366f1; background: #eef2ff; padding: 3px 8px; border-radius: 6px;">Live Demo</span>
+                    </div>
+
+                    <!-- Interactive Tab Switcher -->
+                    <div class="demo-tab-selector" role="tablist">
+                        <button class="demo-tab-btn active" data-tab="tab-quiz" role="tab">
+                            <span>⚡</span> Smart Quiz
+                        </button>
+                        <button class="demo-tab-btn" data-tab="tab-flashcard" role="tab">
+                            <span>🎴</span> 3D Card
+                        </button>
+                        <button class="demo-tab-btn" data-tab="tab-chat" role="tab">
+                            <span>💬</span> PDF Chat
+                        </button>
+                        <button class="demo-tab-btn" data-tab="tab-exam" data-tab-name="exam" role="tab">
+                            <span>🎯</span> Exam Answer
+                        </button>
+                    </div>
+
+                    <div class="demo-tab-body">
+                        <!-- TAB 1: SMART QUIZ (INTERACTIVE MCQ) -->
+                        <div class="demo-pane active" id="tab-quiz">
+                            <div class="demo-quiz-container">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <span style="font-size: 11px; font-weight: 800; color: #6366f1; text-transform: uppercase;">Question 1 of 5</span>
+                                    <span style="font-size: 11px; color: #64748b;">Topic: Process Scheduling</span>
+                                </div>
+                                <p class="demo-quiz-question">Which process scheduling algorithm can lead to the "convoy effect"?</p>
+                                <div class="demo-quiz-options">
+                                    <div class="demo-quiz-option" data-correct="false" onclick="handleDemoQuizClick(this, false)">
+                                        <span class="demo-badge-letter">A</span>
+                                        <span>Round Robin (RR) with fixed time quantum</span>
+                                    </div>
+                                    <div class="demo-quiz-option" data-correct="true" onclick="handleDemoQuizClick(this, true)">
+                                        <span class="demo-badge-letter">B</span>
+                                        <span>First-Come, First-Served (FCFS)</span>
+                                    </div>
+                                    <div class="demo-quiz-option" data-correct="false" onclick="handleDemoQuizClick(this, false)">
+                                        <span class="demo-badge-letter">C</span>
+                                        <span>Shortest Job First (SJF) Preemptive</span>
+                                    </div>
+                                </div>
+                                <div class="demo-quiz-explanation" id="demo-explanation">
+                                    <strong>✓ Correct!</strong> In FCFS, if a CPU-intensive process arrives first, all subsequent short processes get stuck waiting behind it, causing the convoy effect.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- TAB 2: 3D FLASHCARD -->
+                        <div class="demo-pane" id="tab-flashcard">
+                            <div class="demo-card-scene" onclick="toggleDemoCardFlip()">
+                                <div class="demo-flippable-card" id="home-demo-card">
+                                    <div class="demo-card-face front">
+                                        <span class="demo-card-top-tag">Concept Drill · Front</span>
+                                        <div class="demo-card-content">
+                                            What is a "Page Fault" in Virtual Memory?
+                                        </div>
+                                        <div class="demo-card-prompt-hint">Click card to reveal definition ↻</div>
+                                    </div>
+                                    <div class="demo-card-face back">
+                                        <span class="demo-card-top-tag" style="color: #4338ca;">Key Definition · Back</span>
+                                        <div class="demo-card-content" style="font-size: 14.5px; font-weight: 600;">
+                                            An interrupt generated when an active program tries to access a memory page that is mapped in virtual address space, but currently not loaded in physical RAM.
+                                        </div>
+                                        <div class="demo-card-prompt-hint" style="color: #4338ca;">Click to flip back ↻</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="text-align: center;">
+                                <button type="button" class="btn-outline-glass" style="padding: 6px 16px; font-size: 12px; border-radius: 8px;" onclick="toggleDemoCardFlip()">
+                                    Flip Card ↻
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- TAB 3: PDF CHAT -->
+                        <div class="demo-pane" id="tab-chat">
+                            <div class="demo-chat-thread">
+                                <div class="demo-chat-msg student">
+                                    <div class="demo-chat-avatar">S</div>
+                                    <div class="demo-chat-text">
+                                        What are the 4 conditions required for a deadlock?
+                                    </div>
+                                </div>
+                                <div class="demo-chat-msg ai">
+                                    <div class="demo-chat-avatar">AI</div>
+                                    <div class="demo-chat-text">
+                                        Based on your study notes, the 4 Coffman conditions are:
+                                        <br><strong>1. Mutual Exclusion:</strong> Resource held exclusively.
+                                        <br><strong>2. Hold & Wait:</strong> Holding resource while requesting another.
+                                        <br><strong>3. No Preemption:</strong> Resources cannot be forcibly taken.
+                                        <br><strong>4. Circular Wait:</strong> Closed chain of waiting processes.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- TAB 4: EXAM ANSWER -->
+                        <div class="demo-pane" id="tab-exam">
+                            <div class="demo-exam-card">
+                                <span class="demo-exam-marks-badge">Target: 5 Marks Format</span>
+                                <h4 class="demo-exam-title">Q: Explain Round Robin Scheduling in Operating Systems.</h4>
+                                <div class="demo-exam-body">
+                                    <strong>1. Definition:</strong> Preemptive scheduling algorithm designed specifically for time-sharing systems.<br>
+                                    <strong>2. Time Quantum:</strong> Each process receives a fixed time slice (quantum). If unfinished, it is preempted to the back of the ready queue.<br>
+                                    <strong>3. Starvation-Free:</strong> Fair CPU allocation ensures zero starvation.<br>
+                                    <strong>4. Trade-off:</strong> Too small a quantum causes excessive context-switch overhead; too large degrades into FCFS.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- STATS STRIP -->
+        <div class="stats-strip-container">
+            <div class="stats-strip">
+                <div class="stat-item">
+                    <span class="stat-number">6</span>
+                    <span class="stat-label">AI Study Tools</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">100%</span>
+                    <span class="stat-label">Grounded In Notes</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">&lt; 3s</span>
+                    <span class="stat-label">Fast Generation</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">0</span>
+                    <span class="stat-label">Hallucinations</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 6 POWERFUL TOOLS SHOWCASE -->
+        <section class="section-block" style="padding-top: 20px;">
+            <span class="eyebrow">INTELLIGENT REVISION SUITE</span>
+            <h2 style="margin-bottom: 45px;">Everything you need to master your syllabus.</h2>
+
+            <div class="feature-grid-v2">
+                <!-- Tool 1: AI Chat -->
+                <article class="tool-card-v2">
+                    <div>
+                        <div class="tool-card-header">
+                            <div class="tool-card-icon tool-icon-purple">💬</div>
+                            <span class="tool-card-tag tool-tag-purple">Instant Answers</span>
+                        </div>
+                        <h3>AI-Powered PDF Chat</h3>
+                        <p>Ask questions directly to your uploaded textbooks and lecture slides. Gets answers strictly cited from your text.</p>
+                    </div>
+                    <a href="/features/" class="tool-card-link">Try PDF Chat <span>→</span></a>
+                </article>
+
+                <!-- Tool 2: Smart Quiz -->
+                <article class="tool-card-v2">
+                    <div>
+                        <div class="tool-card-header">
+                            <div class="tool-card-icon tool-icon-blue">⚡</div>
+                            <span class="tool-card-tag tool-tag-blue">Auto-Scored</span>
+                        </div>
+                        <h3>Smart MCQ Quizzes</h3>
+                        <p>Generate 5 multiple-choice questions per session. Submit answers for immediate percentage scores and grounded explanations.</p>
+                    </div>
+                    <a href="/features/" class="tool-card-link">Generate Quiz <span>→</span></a>
+                </article>
+
+                <!-- Tool 3: Flashcards -->
+                <article class="tool-card-v2">
+                    <div>
+                        <div class="tool-card-header">
+                            <div class="tool-card-icon tool-icon-emerald">🎴</div>
+                            <span class="tool-card-tag tool-tag-emerald">Active Recall</span>
+                        </div>
+                        <h3>3D AI Flashcards</h3>
+                        <p>Turn core definitions and formulas into a flippable 3D study deck. Flip between concepts and definitions with keyboard or clicks.</p>
+                    </div>
+                    <a href="/features/" class="tool-card-link">Review Flashcards <span>→</span></a>
+                </article>
+
+                <!-- Tool 4: Summary -->
+                <article class="tool-card-v2">
+                    <div>
+                        <div class="tool-card-header">
+                            <div class="tool-card-icon tool-icon-amber">📝</div>
+                            <span class="tool-card-tag tool-tag-amber">Executive Brief</span>
+                        </div>
+                        <h3>Structured Notes Summary</h3>
+                        <p>Transform 40 pages of dense reading into an executive overview, key terms, formulas, and high-yield revision takeaways.</p>
+                    </div>
+                    <a href="/features/" class="tool-card-link">Summarize Notes <span>→</span></a>
+                </article>
+
+                <!-- Tool 5: Exam Answers -->
+                <article class="tool-card-v2">
+                    <div>
+                        <div class="tool-card-header">
+                            <div class="tool-card-icon tool-icon-rose">🎯</div>
+                            <span class="tool-card-tag tool-tag-rose">Mark Calibrated</span>
+                        </div>
+                        <h3>Exam Answer Architect</h3>
+                        <p>Choose your target marks (2M, 5M, or 10M). Get an answer structured with exact headings and bullet points examiners expect.</p>
+                    </div>
+                    <a href="/features/" class="tool-card-link">Structure Answers <span>→</span></a>
+                </article>
+
+                <!-- Tool 6: Personalized Plan -->
+                <article class="tool-card-v2">
+                    <div>
+                        <div class="tool-card-header">
+                            <div class="tool-card-icon tool-icon-cyan">📊</div>
+                            <span class="tool-card-tag tool-tag-cyan">Adaptive Plan</span>
+                        </div>
+                        <h3>Personalized Revision Plan</h3>
+                        <p>NoteWise AI tracks your quiz attempts to identify your weak topics and generates a targeted revision roadmap.</p>
+                    </div>
+                    <a href="/features/" class="tool-card-link">Create Study Plan <span>→</span></a>
+                </article>
+            </div>
+        </section>
+
+        <!-- INTERACTIVE BEFORE VS. AFTER COMPARISON -->
+        <section class="comparison-section">
+            <div style="text-align: center;">
+                <span class="eyebrow">THE NOTEWISE DIFFERENCE</span>
+                <h2 style="font-size: clamp(28px, 4vw, 38px); margin: 12px 0; color: #1e1b4b;">Say goodbye to passive, exhausting revision.</h2>
+                <p style="color: #64748b; font-size: 16px;">See how active recall with NoteWise AI changes your learning curve.</p>
+            </div>
+
+            <div class="comparison-grid">
+                <div class="comparison-card old-way">
+                    <span class="comparison-badge">The Traditional Way</span>
+                    <h3>Passive & Stressful</h3>
+                    <ul class="comparison-list">
+                        <li><span class="comp-icon">✕</span> Rereading 80-page dense textbook chapters with low retention.</li>
+                        <li><span class="comp-icon">✕</span> Highlighting endlessly without testing true memory recall.</li>
+                        <li><span class="comp-icon">✕</span> Guessing what questions might appear on the actual exam.</li>
+                        <li><span class="comp-icon">✕</span> Writing practice answers without knowing if they meet mark allocations.</li>
+                        <li><span class="comp-icon">✕</span> Cramming in panic the night before with disorganized notes.</li>
+                    </ul>
+                </div>
+
+                <div class="comparison-card new-way">
+                    <span class="comparison-badge">With NoteWise AI</span>
+                    <h3>Active & High-Yield</h3>
+                    <ul class="comparison-list">
+                        <li><span class="comp-icon">✓</span> Instant text extraction into clean summaries and key term tables.</li>
+                        <li><span class="comp-icon">✓</span> 3D Flashcards and auto-scored quizzes that enforce real active recall.</li>
+                        <li><span class="comp-icon">✓</span> Exam answer structure specifically calibrated for 2, 5, or 10 marks.</li>
+                        <li><span class="comp-icon">✓</span> Instant feedback with explanations grounded strictly in your syllabus.</li>
+                        <li><span class="comp-icon">✓</span> An adaptive revision plan that automatically targets your weak areas.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- INTERACTIVE FAQ ACCORDION -->
+        <section class="faq-section">
+            <div style="text-align: center;">
+                <span class="eyebrow">FREQUENTLY ASKED QUESTIONS</span>
+                <h2 style="font-size: clamp(26px, 3.5vw, 36px); margin: 12px 0; color: #1e1b4b;">Got questions? We've got answers.</h2>
+            </div>
+
+            <div class="faq-accordion">
+                <div class="faq-item open">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>How does NoteWise AI ensure answers are accurate?</span>
+                        <span class="faq-toggle-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        NoteWise AI operates on a strictly grounded prompt architecture. When you upload a PDF or paste notes, our Gemini AI engine is constrained to use <em>only</em> the context within your material. If an answer cannot be verified from your text, NoteWise AI explicitly tells you rather than inventing information.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>What file formats can I upload?</span>
+                        <span class="faq-toggle-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        You can upload digital, text-based PDF documents up to 10 MB in size. You can also paste raw study notes, lecture transcripts, and markdown summaries directly into the workspace textarea.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>How does quiz scoring and weak topic tracking work?</span>
+                        <span class="faq-toggle-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        When you generate a Smart Quiz, NoteWise AI produces 5 multiple-choice questions. After you submit your answers, the system automatically grades your submission, shows detailed question-by-question explanations, and records your score in session history to personalize future revision plans.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>Is NoteWise AI free to use?</span>
+                        <span class="faq-toggle-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        Yes! NoteWise AI connects to Google Gemini via your free Gemini API key from Google AI Studio, giving you fast, reliable, high-volume study assistance at zero software cost.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- BOTTOM CALL TO ACTION -->
+        <section class="home-cta" style="margin-top: 60px;">
+            <h2>Your next high-scoring study session starts now.</h2>
+            <p>Upload your notes and let NoteWise AI turn passive reading into active mastery.</p>
+            <a href="/features/" class="primary-btn" style="padding: 15px 32px; font-size: 15px; font-weight: 750;">
+                Launch NoteWise AI Workspace →
+            </a>
+        </section>
+    </main>
+
+    {% include 'cms/footer.html' %}
+
+    <!-- Lightweight Interactive Scripts for Home Page -->
+    <script>
+        // Tab switching logic for the interactive demo widget
+        document.querySelectorAll('.demo-tab-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                document.querySelectorAll('.demo-tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.demo-pane').forEach(p => p.classList.remove('active'));
+
+                button.classList.add('active');
+                const targetId = button.getAttribute('data-tab');
+                const targetPane = document.getElementById(targetId);
+                if (targetPane) {
+                    targetPane.classList.add('active');
+                }
+            });
+        });
+
+        // 3D Card flip toggle
+        function toggleDemoCardFlip() {
+            const card = document.getElementById('home-demo-card');
+            if (card) {
+                card.classList.toggle('is-flipped');
+            }
+        }
+
+        // Quiz option selection simulation
+        function handleDemoQuizClick(element, isCorrect) {
+            const container = element.closest('.demo-quiz-container');
+            const options = container.querySelectorAll('.demo-quiz-option');
+            const explanation = document.getElementById('demo-explanation');
+
+            options.forEach(opt => {
+                opt.classList.remove('selected-correct', 'selected-wrong');
+            });
+
+            if (isCorrect) {
+                element.classList.add('selected-correct');
+                if (explanation) {
+                    explanation.style.display = 'block';
+                    explanation.style.background = '#f0fdf4';
+                    explanation.style.borderColor = '#10b981';
+                    explanation.innerHTML = '<strong>✓ Correct!</strong> In FCFS, short processes get stuck waiting behind long CPU-bound tasks, creating the convoy effect.';
+                }
+            } else {
+                element.classList.add('selected-wrong');
+                // Highlight the correct one
+                const correctOpt = container.querySelector('[data-correct="true"]');
+                if (correctOpt) correctOpt.classList.add('selected-correct');
+                if (explanation) {
+                    explanation.style.display = 'block';
+                    explanation.style.background = '#fff1f2';
+                    explanation.style.borderColor = '#f43f5e';
+                    explanation.innerHTML = '<strong>✕ Not quite:</strong> FCFS (Option B) is the non-preemptive algorithm that causes the convoy effect.';
+                }
+            }
+        }
+
+        // FAQ accordion toggle
+        function toggleFaq(headerElement) {
+            const item = headerElement.closest('.faq-item');
+            if (item) {
+                item.classList.toggle('open');
+            }
+        }
+    </script>
+</body>
+</html>

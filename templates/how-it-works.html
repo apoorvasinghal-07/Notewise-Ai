@@ -1,0 +1,290 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title|default:"NoteWise AI | How It Works · The 3-Step Study Workflow" }}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    {% include 'cms/header.html' %}
+
+    <main class="page-main" style="padding-top: 50px;">
+        <!-- PAGE HEADING -->
+        <section class="page-heading">
+            <div class="hero-badge-pill" style="margin-bottom: 14px;">
+                <span class="pulsing-dot"></span>
+                <span>A FRICTIONLESS 3-STEP REVISION WORKFLOW</span>
+            </div>
+            <h1 style="font-size: clamp(34px, 4.5vw, 54px); margin: 12px 0 16px;">
+                How <span class="gradient-headline">NoteWise AI</span> works.
+            </h1>
+            <p style="max-width: 680px; margin: 0 auto; font-size: 16.5px; color: #64748b; line-height: 1.8;">
+                From raw textbooks and lecture slides to high-retention practice and exam readiness in seconds.
+                Discover the simple, evidence-based workflow behind NoteWise AI.
+            </p>
+        </section>
+
+        <!-- 3-STEP INTERACTIVE WORKFLOW TIMELINE -->
+        <section class="step-timeline-container">
+            <!-- STEP 01 -->
+            <div class="step-row">
+                <div class="step-badge-large">01</div>
+                <div class="step-details">
+                    <span class="eyebrow" style="font-size: 10.5px; color: #6366f1;">STEP 01 · ADD MATERIAL</span>
+                    <h2>Upload or Paste Your Notes</h2>
+                    <p>
+                        Import any digital, text-based PDF up to 10 MB or paste your lecture notes directly into the workspace.
+                        Our text extraction engine cleans formatting, checks for encryption, and stores your document securely in your private library.
+                    </p>
+                    <div class="step-pill-list">
+                        <span class="step-micro-pill">✓ Digital PDFs up to 10MB</span>
+                        <span class="step-micro-pill">✓ Raw Text & Transcripts</span>
+                        <span class="step-micro-pill">✓ Private & Isolated Library</span>
+                    </div>
+                </div>
+                <div class="step-preview-box" style="border-style: solid; background: #ffffff; box-shadow: 0 4px 15px rgba(0,0,0,0.04);">
+                    <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 12px;">
+                        <div style="width: 42px; height: 42px; border-radius: 10px; background: #fee2e2; color: #dc2626; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 800;">
+                            PDF
+                        </div>
+                        <div>
+                            <div style="font-size: 13.5px; font-weight: 700; color: #1e1b4b;">Operating_Systems_Ch4.pdf</div>
+                            <div style="font-size: 11.5px; color: #64748b;">2.4 MB · Digital Text Verified</div>
+                        </div>
+                    </div>
+                    <div style="height: 6px; width: 100%; background: #e2e8f0; border-radius: 9999px; overflow: hidden; margin-bottom: 8px;">
+                        <div style="height: 100%; width: 100%; background: #10b981; border-radius: 9999px;"></div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; font-size: 11px; color: #10b981; font-weight: 700;">
+                        <span>✓ Text Extracted (42,000 characters)</span>
+                        <span>Ready to Analyze</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- STEP 02 -->
+            <div class="step-row">
+                <div class="step-badge-large" style="background: linear-gradient(135deg, #7c3aed, #a855f7);">02</div>
+                <div class="step-details">
+                    <span class="eyebrow" style="font-size: 10.5px; color: #7c3aed;">STEP 02 · SELECT ENGINE</span>
+                    <h2>Choose Your Intelligence Engine</h2>
+                    <p>
+                        Instead of generic chatbots, NoteWise AI gives you 6 dedicated study engines calibrated for academic requirements.
+                        Choose whether you need to drill concepts, generate practice tests, or prepare exam-structured answers.
+                    </p>
+                    <div class="step-pill-list">
+                        <span class="step-micro-pill">💬 PDF Chat</span>
+                        <span class="step-micro-pill">⚡ Smart Quiz</span>
+                        <span class="step-micro-pill">🎴 Flashcards</span>
+                        <span class="step-micro-pill">📝 Summary</span>
+                        <span class="step-micro-pill">🎯 Exam Answers (2/5/10M)</span>
+                    </div>
+                </div>
+                <div class="step-preview-box" style="border-style: solid; background: #ffffff; box-shadow: 0 4px 15px rgba(0,0,0,0.04);">
+                    <div style="font-size: 12px; font-weight: 750; color: #64748b; margin-bottom: 10px; text-transform: uppercase;">
+                        Active Study Engines:
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                        <div style="padding: 9px 12px; border-radius: 8px; background: #faf5ff; border: 1px solid #e9d5ff; font-size: 12px; font-weight: 700; color: #7c3aed;">
+                            ⚡ Smart Quiz (5 MCQs)
+                        </div>
+                        <div style="padding: 9px 12px; border-radius: 8px; background: #f0fdf4; border: 1px solid #bbf7d0; font-size: 12px; font-weight: 700; color: #15803d;">
+                            🎴 3D Flashcards Deck
+                        </div>
+                        <div style="padding: 9px 12px; border-radius: 8px; background: #eff6ff; border: 1px solid #bfdbfe; font-size: 12px; font-weight: 700; color: #1d4ed8;">
+                            🎯 Exam Answers (5M)
+                        </div>
+                        <div style="padding: 9px 12px; border-radius: 8px; background: #fff7ed; border: 1px solid #fed7aa; font-size: 12px; font-weight: 700; color: #c2410c;">
+                            📊 Weak Topic Diagnostic
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- STEP 03 -->
+            <div class="step-row">
+                <div class="step-badge-large" style="background: linear-gradient(135deg, #059669, #10b981);">03</div>
+                <div class="step-details">
+                    <span class="eyebrow" style="font-size: 10.5px; color: #059669;">STEP 03 · RETRIEVE & RETAIN</span>
+                    <h2>Active Recall & Weak-Area Mastery</h2>
+                    <p>
+                        Cognitive science proves self-testing doubles memory retention. When you complete quizzes,
+                        NoteWise AI grades your score, highlights explanations, and updates your session history so your personalized study roadmap focuses where you need it most.
+                    </p>
+                    <div class="step-pill-list">
+                        <span class="step-micro-pill">✓ Instant Percentage Score</span>
+                        <span class="step-micro-pill">✓ Grounded Review Explanations</span>
+                        <span class="step-micro-pill">✓ Adaptive Revision Roadmap</span>
+                    </div>
+                </div>
+                <div class="step-preview-box" style="border-style: solid; background: #ffffff; box-shadow: 0 4px 15px rgba(0,0,0,0.04);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <span style="font-size: 13.5px; font-weight: 800; color: #0f172a;">Quiz Results Card</span>
+                        <span style="font-size: 12px; font-weight: 800; color: #059669; background: #d1fae5; padding: 2px 8px; border-radius: 6px;">80% Score</span>
+                    </div>
+                    <div style="font-size: 12px; color: #334155; line-height: 1.5; margin-bottom: 8px;">
+                        <strong>✓ Strong Area:</strong> Virtual Memory & Paging (3/3)<br>
+                        <strong>⚠️ Focus Priority:</strong> Coffman Conditions in Deadlocks (1/2)
+                    </div>
+                    <div style="padding: 6px 10px; border-radius: 6px; background: #f1f5f9; font-size: 11px; color: #64748b;">
+                        Personalized Plan updated with targeted recall drills.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- INTERACTIVE CONCEPT SANDBOX -->
+        <section class="sandbox-card">
+            <div class="sandbox-header">
+                <span class="eyebrow">INTERACTIVE CONCEPT PREVIEW</span>
+                <h2 style="font-size: clamp(24px, 3.2vw, 32px); margin: 10px 0 8px; color: #1e1b4b;">
+                    Try a sample study concept
+                </h2>
+                <p style="color: #64748b; font-size: 15px; margin: 0;">
+                    Click a topic below to see how NoteWise AI generates structured revision resources:
+                </p>
+            </div>
+
+            <div class="sandbox-pill-row">
+                <button class="sandbox-pill active" onclick="switchSandbox('os', this)">
+                    💻 Operating Systems
+                </button>
+                <button class="sandbox-pill" onclick="switchSandbox('bio', this)">
+                    🧬 Cellular Biology
+                </button>
+                <button class="sandbox-pill" onclick="switchSandbox('econ', this)">
+                    📈 Microeconomics
+                </button>
+                <button class="sandbox-pill" onclick="switchSandbox('hist', this)">
+                    📜 World History
+                </button>
+            </div>
+
+            <div class="sandbox-display-panel" id="sandbox-content">
+                <!-- Dynamically updated by JS below -->
+            </div>
+        </section>
+
+        <!-- COGNITIVE SCIENCE BEHIND NOTEWISE AI -->
+        <section class="section-block" style="padding-top: 60px; padding-bottom: 40px;">
+            <div style="text-align: center; max-width: 700px; margin: 0 auto 40px;">
+                <span class="eyebrow">THE SCIENCE OF LEARNING</span>
+                <h2 style="margin: 10px 0 14px; font-size: clamp(26px, 3.5vw, 36px);">Built on evidence-based cognitive psychology.</h2>
+                <p style="color: #64748b; font-size: 15.5px; line-height: 1.7;">
+                    Most students spend 80% of their time on low-yield passive reading. NoteWise AI automates high-yield study techniques proven by decades of memory research:
+                </p>
+            </div>
+
+            <div class="feature-grid-v2">
+                <article class="tool-card-v2" style="padding: 24px;">
+                    <div class="tool-card-header">
+                        <div class="tool-card-icon tool-icon-purple">🧠</div>
+                        <span class="tool-card-tag tool-tag-purple">Testing Effect</span>
+                    </div>
+                    <h3>Active Retrieval Practice</h3>
+                    <p>Testing your memory via flashcards and smart quizzes creates stronger neural recall pathways than rereading a textbook chapter five times.</p>
+                </article>
+
+                <article class="tool-card-v2" style="padding: 24px;">
+                    <div class="tool-card-header">
+                        <div class="tool-card-icon tool-icon-emerald">🎯</div>
+                        <span class="tool-card-tag tool-tag-emerald">Zero Guesswork</span>
+                    </div>
+                    <h3>Immediate Grounded Feedback</h3>
+                    <p>Learning is fastest when mistakes are corrected immediately. Every quiz question comes with a verified rationale cited directly from your notes.</p>
+                </article>
+
+                <article class="tool-card-v2" style="padding: 24px;">
+                    <div class="tool-card-header">
+                        <div class="tool-card-icon tool-icon-blue">📐</div>
+                        <span class="tool-card-tag tool-tag-blue">Rubric Calibrated</span>
+                    </div>
+                    <h3>Mark Allocation Calibration</h3>
+                    <p>Exam graders look for specific keywords and structures. Our 2M, 5M, and 10M templates ensure you write answers formatted exactly for full marks.</p>
+                </article>
+            </div>
+        </section>
+
+        <!-- BOTTOM CALL TO ACTION -->
+        <section class="home-cta">
+            <h2>Ready to see it in action on your own notes?</h2>
+            <p>Upload your textbook or lecture slides and experience smarter revision in seconds.</p>
+            <a href="/features/" class="primary-btn" style="padding: 15px 32px; font-size: 15px; font-weight: 750;">
+                Get Started in Your Workspace →
+            </a>
+        </section>
+    </main>
+
+    {% include 'cms/footer.html' %}
+
+    <!-- Interactive Script for Sandbox -->
+    <script>
+        const sandboxData = {
+            os: {
+                title: "Operating Systems · Virtual Memory & Process Scheduling",
+                quiz: "Q: What is the main drawback of First-Come, First-Served (FCFS) CPU scheduling?<br><strong>Answer:</strong> The convoy effect, where short jobs wait behind long I/O-intensive jobs.",
+                card: "<strong>Front:</strong> Banker's Algorithm<br><strong>Back:</strong> A deadlock avoidance algorithm that tests for safety by simulating the allocation of predetermined maximum possible amounts of resources.",
+                exam: "<strong>Exam Answer (5 Marks):</strong> 1. Definition of Virtual Memory. 2. Paging Mechanism (Pages mapped to Frames). 3. Page Fault Handling routine. 4. Advantages (processes exceed physical RAM)."
+            },
+            bio: {
+                title: "Cellular Biology · Photosynthesis & Light Reactions",
+                quiz: "Q: Which molecule is split during the light-dependent reactions to release oxygen?<br><strong>Answer:</strong> Water (H₂O) is photolyzed, releasing electrons, protons, and O₂ gas.",
+                card: "<strong>Front:</strong> ATP Synthase<br><strong>Back:</strong> An enzyme that utilizes the proton gradient across the thylakoid membrane to phosphorylate ADP into ATP.",
+                exam: "<strong>Exam Answer (5 Marks):</strong> 1. Light-Dependent vs Calvin Cycle. 2. Role of Chlorophyll a & b in photon absorption. 3. Electron Transport Chain summary. 4. Formation of NADPH and ATP."
+            },
+            econ: {
+                title: "Microeconomics · Elasticity of Demand & Supply",
+                quiz: "Q: If Price Elasticity of Demand (PED) is greater than 1, how is demand characterized?<br><strong>Answer:</strong> Elastic demand (percentage change in quantity demanded exceeds percentage change in price).",
+                card: "<strong>Front:</strong> Cross-Price Elasticity of Demand (XED)<br><strong>Back:</strong> Measures the responsiveness of quantity demanded for good A when the price of good B changes. Positive for substitutes, negative for complements.",
+                exam: "<strong>Exam Answer (5 Marks):</strong> 1. Mathematical definition of PED. 2. Four key determinants of elasticity. 3. Total revenue relationship (effect of price increases on elastic vs inelastic goods)."
+            },
+            hist: {
+                title: "World History · The Industrial Revolution",
+                quiz: "Q: Which invention revolutionized textile manufacturing and coal-mine water pumping in 18th-century Britain?<br><strong>Answer:</strong> James Watt's improved steam engine (1769).",
+                card: "<strong>Front:</strong> Enclosure Acts<br><strong>Back:</strong> British parliamentary acts that privatized common land, driving rural labor into rapidly growing urban industrial centers.",
+                exam: "<strong>Exam Answer (5 Marks):</strong> 1. Causes of the British head start (coal, iron, capital, empire). 2. Key technological transformations (Spinning Jenny, Steam). 3. Social consequences (urbanization, labor movements)."
+            }
+        };
+
+        function renderSandbox(key) {
+            const data = sandboxData[key];
+            const container = document.getElementById('sandbox-content');
+            if (!container || !data) return;
+
+            container.innerHTML = `
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px;">
+                    <span style="font-size: 14px; font-weight: 800; color: #1e1b4b;">${data.title}</span>
+                    <span style="font-size: 11px; font-weight: 700; color: #6366f1; background: #eef2ff; padding: 3px 8px; border-radius: 6px;">Generated Output</span>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px;">
+                    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px;">
+                        <span style="display: inline-block; font-size: 10px; font-weight: 800; color: #7c3aed; background: #faf5ff; padding: 2px 7px; border-radius: 4px; margin-bottom: 8px;">SAMPLE SMART QUIZ</span>
+                        <div style="font-size: 12.5px; color: #334155; line-height: 1.5;">${data.quiz}</div>
+                    </div>
+                    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px;">
+                        <span style="display: inline-block; font-size: 10px; font-weight: 800; color: #059669; background: #ecfdf5; padding: 2px 7px; border-radius: 4px; margin-bottom: 8px;">SAMPLE 3D FLASHCARD</span>
+                        <div style="font-size: 12.5px; color: #334155; line-height: 1.5;">${data.card}</div>
+                    </div>
+                    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px;">
+                        <span style="display: inline-block; font-size: 10px; font-weight: 800; color: #1d4ed8; background: #eff6ff; padding: 2px 7px; border-radius: 4px; margin-bottom: 8px;">SAMPLE EXAM ANSWER</span>
+                        <div style="font-size: 12.5px; color: #334155; line-height: 1.5;">${data.exam}</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function switchSandbox(key, buttonElement) {
+            document.querySelectorAll('.sandbox-pill').forEach(btn => btn.classList.remove('active'));
+            if (buttonElement) buttonElement.classList.add('active');
+            renderSandbox(key);
+        }
+
+        // Initialize sandbox with OS content
+        document.addEventListener('DOMContentLoaded', () => {
+            renderSandbox('os');
+        });
+    </script>
+</body>
+</html>

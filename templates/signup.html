@@ -1,0 +1,69 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up | NoteWise AI</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body class="auth-body">
+    <main class="auth-layout">
+        <section class="auth-visual">
+            <a href="/" class="auth-logo">N <span>NoteWise AI</span></a>
+            <div>
+                <span class="eyebrow">START YOUR JOURNEY</span>
+                <h1>Make room<br>for better learning.</h1>
+                <p>Create your account and organize your learning journey with NoteWise AI.</p>
+            </div>
+        </section>
+
+        <section class="auth-content">
+            <div class="auth-box">
+                <div class="auth-symbol">N</div>
+                <h2>Create your account</h2>
+                <p class="auth-description">Get started with NoteWise AI.</p>
+
+                {% if form_errors %}
+                    {% for error in form_errors %}
+                        <p class="auth-error">{{ error }}</p>
+                    {% endfor %}
+                {% endif %}
+
+                <form method="POST" action="/signup/" class="auth-form">
+                    {% csrf_token %}
+
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username"
+                           value="{{ form_data.username|default:'' }}"
+                           placeholder="Choose a username"
+                           autocomplete="username" required>
+
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email"
+                           value="{{ form_data.email|default:'' }}"
+                           placeholder="you@example.com"
+                           autocomplete="email" required>
+
+                    <label for="password1">Password</label>
+                    <input type="password" id="password1" name="password1"
+                           placeholder="Create a password"
+                           autocomplete="new-password" required>
+
+                    <label for="password2">Confirm Password</label>
+                    <input type="password" id="password2" name="password2"
+                           placeholder="Enter password again"
+                           autocomplete="new-password" required>
+
+                    <button class="auth-submit" type="submit">Create Account →</button>
+                </form>
+
+                <p class="auth-bottom">Already have an account?
+                    <a href="/signin/">Sign in</a>
+                </p>
+                <a href="/" class="back-home">← Back to Home</a>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

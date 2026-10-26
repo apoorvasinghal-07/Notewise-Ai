@@ -1,0 +1,571 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title|default:"NoteWise AI | Study Workspace" }}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+    {% include "cms/header.html" %}
+
+    <main class="study-workspace">
+        <!-- Hero Section -->
+        <section class="workspace-hero">
+            <p class="workspace-eyebrow">YOUR PERSONAL AI STUDY SPACE</p>
+            <h1>Turn your notes into <span>knowledge.</span></h1>
+            <p>
+                Upload your study PDF or paste your notes to generate summaries,
+                smart quizzes, interactive flashcards, exam answers, and personalized revision plans.
+            </p>
+        </section>
+
+        <!-- Messages & Notifications -->
+        {% if messages %}
+            <section class="workspace-messages" aria-live="polite">
+                {% for message in messages %}
+                    <div class="workspace-message {{ message.tags }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </section>
+        {% endif %}
+
+        <!-- STEP 01: Upload & Extract Notes -->
+        <section class="upload-panel">
+            <div class="section-heading">
+                <p class="workspace-eyebrow">STEP 01</p>
+                <h2>Upload and analyze your notes</h2>
+                <p>Choose a text-based PDF or paste your study notes below.</p>
+            </div>
+
+            <form method="POST"
+                  action="{% url 'features' %}"
+                  enctype="multipart/form-data"
+                  class="study-upload-form">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="analyze">
+
+                <div class="form-field">
+                    <label for="title">Document name (optional)</label>
+                    <input type="text"
+                           id="title"
+                           name="title"
+                           maxlength="200"
+                           placeholder="e.g. Operating Systems Chapter 3, AI Lecture Notes...">
+                </div>
+
+                <div class="form-field">
+                    <label for="pdf_file">Upload PDF Document</label>
+                    <input type="file"
+                           id="pdf_file"
+                           name="pdf_file"
+                           accept=".pdf,application/pdf">
+                    <small>Text-based PDF only · Maximum size 10 MB</small>
+                </div>
+
+                <div class="form-divider"><span>OR</span></div>
+
+                <div class="form-field">
+                    <label for="notes_text">Paste your study notes</label>
+                    <textarea id="notes_text"
+                              name="notes_text"
+                              rows="7"
+                              placeholder="Paste lecture notes, study guide, syllabus topics, or textbook excerpts here..."></textarea>
+                </div>
+
+                <button type="submit" class="workspace-primary-button">
+                    Analyze Notes
+                </button>
+            </form>
+        </section>
+
+        {% if active_document %}
+            <!-- Active Document Status -->
+            <section class="active-document-panel">
+                <p class="workspace-eyebrow">CURRENT ACTIVE DOCUMENT</p>
+                <h2>{{ active_document.title }}</h2>
+                <p>
+                    <strong>Status:</strong>
+                    <span class="doc-badge active">{{ active_document.status|title }}</span>
+                    &nbsp;·&nbsp;
+                    <strong>Extracted text:</strong>
+                    {{ active_document.source_text|length }} characters
+                    &nbsp;·&nbsp;
+                    <strong>Uploaded:</strong>
+                    {{ active_document.created_at|date:"d M Y, h:i A" }}
+                </p>
+
+                <details class="notes-preview">
+                    <summary>Preview extracted notes ({{ active_document.source_text|length }} characters)</summary>
+                    <pre>{{ active_document.source_text|truncatechars:4000 }}</pre>
+                </details>
+            </section>
+
+            <!-- STEP 02: AI Study Tools Grid -->
+            <section class="ai-tools-section">
+                <div class="section-heading">
+                    <p class="workspace-eyebrow">STEP 02</p>
+                    <h2>Choose your AI study tool</h2>
+                    <p>
+                        All six tools use your active document (<strong>{{ active_document.title }}</strong>) as their knowledge base.
+                    </p>
+                </div>
+
+                {% if not ai_configured %}
+                    <div class="workspace-message warning">
+                        <strong>Gemini AI is not configured yet.</strong>
+                        Your notes have been extracted and saved successfully. To enable AI generation,
+                        create a <code>.env</code> file in the project folder with <code>GEMINI_API_KEY=your_key</code>
+                        or set the environment variable.
+                    </div>
+                {% endif %}
+
+                <div class="ai-tools-grid">
+                    <!-- Tool 1: AI-Powered PDF Chat -->
+                    <article class="ai-tool-card">
+                        <div class="tool-number">01</div>
+                        <h3>AI-Powered PDF Chat</h3>
+                        <p>Ask specific questions about your uploaded study material.</p>
+                        <form method="POST" action="{% url 'features' %}#study-result" class="ai-tool-form">
+                            {% csrf_token %}
+                            <input type="hidden" name="action" value="use_tool">
+                            <input type="hidden" name="tool" value="chat">
+                            <div class="tool-input-group">
+                                <input type="text"
+                                       name="question"
+                                       required
+                                       class="tool-input"
+                                       placeholder="Ask a question about these notes...">
+                            </div>
+                            <button type="submit" class="workspace-secondary-button">
+                                Ask NoteWise Chat
+                            </button>
+                        </form>
+                    </article>
+
+                    <!-- Tool 2: Smart Quiz Generator -->
+                    <article class="ai-tool-card">
+                        <div class="tool-number">02</div>
+                        <h3>Smart Quiz Generator</h3>
+                        <p>Generate 5 multiple-choice questions grounded in your notes.</p>
+                        <form method="POST" action="{% url 'features' %}#study-result" class="ai-tool-form">
+                            {% csrf_token %}
+                            <input type="hidden" name="action" value="use_tool">
+                            <input type="hidden" name="tool" value="quiz">
+                            <button type="submit" class="workspace-secondary-button">
+                                Generate 5 MCQs Quiz
+                            </button>
+                        </form>
+                    </article>
+
+                    <!-- Tool 3: AI Flashcards -->
+                    <article class="ai-tool-card">
+                        <div class="tool-number">03</div>
+                        <h3>AI Flashcards</h3>
+                        <p>Create key term and concept flashcards with interactive flip.</p>
+                        <form method="POST" action="{% url 'features' %}#study-result" class="ai-tool-form">
+                            {% csrf_token %}
+                            <input type="hidden" name="action" value="use_tool">
+                            <input type="hidden" name="tool" value="flashcards">
+                            <button type="submit" class="workspace-secondary-button">
+                                Create Flashcards
+                            </button>
+                        </form>
+                    </article>
+
+                    <!-- Tool 4: Instant Notes Summarization -->
+                    <article class="ai-tool-card">
+                        <div class="tool-number">04</div>
+                        <h3>Notes Summary</h3>
+                        <p>Generate structured summaries with definitions and revision takeaways.</p>
+                        <form method="POST" action="{% url 'features' %}#study-result" class="ai-tool-form">
+                            {% csrf_token %}
+                            <input type="hidden" name="action" value="use_tool">
+                            <input type="hidden" name="tool" value="summary">
+                            <button type="submit" class="workspace-secondary-button">
+                                Summarize Notes
+                            </button>
+                        </form>
+                    </article>
+
+                    <!-- Tool 5: Exam Answer Generator -->
+                    <article class="ai-tool-card">
+                        <div class="tool-number">05</div>
+                        <h3>Exam Answer Generator</h3>
+                        <p>Prepare structured answers for 2, 5 or 10 marks.</p>
+                        <form method="POST" action="{% url 'features' %}#study-result" class="ai-tool-form">
+                            {% csrf_token %}
+                            <input type="hidden" name="action" value="use_tool">
+                            <input type="hidden" name="tool" value="exam_answers">
+                            <div class="tool-input-group">
+                                <input type="text"
+                                       name="topic"
+                                       required
+                                       class="tool-input"
+                                       placeholder="Enter question or topic...">
+                                <div class="marks-selector">
+                                    <span>Marks:</span>
+                                    <div class="marks-pills">
+                                        <label class="marks-pill-label">
+                                            <input type="radio" name="marks" value="2"> 2 M
+                                        </label>
+                                        <label class="marks-pill-label">
+                                            <input type="radio" name="marks" value="5" checked> 5 M
+                                        </label>
+                                        <label class="marks-pill-label">
+                                            <input type="radio" name="marks" value="10"> 10 M
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="workspace-secondary-button">
+                                Generate Answer
+                            </button>
+                        </form>
+                    </article>
+
+                    <!-- Tool 6: Personalized Learning -->
+                    <article class="ai-tool-card">
+                        <div class="tool-number">06</div>
+                        <h3>Personalized Learning</h3>
+                        <p>Build a revision plan based on your notes and quiz performance.</p>
+                        <form method="POST" action="{% url 'features' %}#study-result" class="ai-tool-form">
+                            {% csrf_token %}
+                            <input type="hidden" name="action" value="use_tool">
+                            <input type="hidden" name="tool" value="personalized">
+                            <button type="submit" class="workspace-secondary-button">
+                                Build Revision Plan
+                            </button>
+                        </form>
+                    </article>
+                </div>
+            </section>
+
+            <!-- STEP 03: Generated Study Results Panel -->
+            {% if study_result %}
+                <section class="study-result-panel" id="study-result">
+                    <div class="result-header">
+                        <div class="result-title-group">
+                            <p class="workspace-eyebrow">AI STUDY RESULTS</p>
+                            <h2>{{ study_result.title }}</h2>
+                        </div>
+                        <div class="result-actions">
+                            {% if study_result.text %}
+                                <button type="button" class="result-btn-secondary copy-result-btn" data-target="study-result-body">
+                                    Copy Text
+                                </button>
+                            {% endif %}
+                            <form method="POST" action="{% url 'features' %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="action" value="clear_result">
+                                <button type="submit" class="result-btn-secondary">
+                                    Close Result
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- RESULT: AI-Powered PDF Chat -->
+                    {% if study_result.tool == 'chat' %}
+                        <div class="chat-wrapper">
+                            <div class="chat-thread" id="chat-thread">
+                                {% if study_result.chat_history %}
+                                    {% for message in study_result.chat_history %}
+                                        <div class="chat-bubble user">
+                                            <div class="speaker-label">You</div>
+                                            <div>{{ message.question }}</div>
+                                        </div>
+                                        <div class="chat-bubble assistant">
+                                            <div class="speaker-label">NoteWise AI</div>
+                                            <div>{{ message.answer }}</div>
+                                        </div>
+                                    {% endfor %}
+                                {% else %}
+                                    <div class="chat-bubble user">
+                                        <div class="speaker-label">You</div>
+                                        <div>{{ study_result.question }}</div>
+                                    </div>
+                                    <div class="chat-bubble assistant">
+                                        <div class="speaker-label">NoteWise AI</div>
+                                        <div>{{ study_result.text }}</div>
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Follow-up Question Input -->
+                            <form method="POST" action="{% url 'features' %}#study-result" class="chat-reply-form ai-tool-form">
+                                {% csrf_token %}
+                                <input type="hidden" name="action" value="use_tool">
+                                <input type="hidden" name="tool" value="chat">
+                                <input type="text"
+                                       name="question"
+                                       required
+                                       placeholder="Ask a follow-up question about {{ active_document.title }}...">
+                                <button type="submit" class="workspace-primary-button">
+                                    Ask
+                                </button>
+                            </form>
+
+                            <div style="margin-top: 14px; display: flex; justify-content: flex-end;">
+                                <form method="POST" action="{% url 'features' %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="action" value="clear_chat">
+                                    <button type="submit" class="result-btn-secondary" style="font-size: 12px;">
+                                        Clear Chat History
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+
+                    <!-- RESULT: Smart Quiz -->
+                    {% elif study_result.tool == 'quiz' %}
+                        <form method="POST" action="{% url 'features' %}#study-result" class="quiz-form">
+                            {% csrf_token %}
+                            <input type="hidden" name="action" value="score_quiz">
+
+                            {% for q in study_result.quiz %}
+                                <div class="quiz-card">
+                                    <div class="quiz-question-header">
+                                        <span class="quiz-number-badge">Question {{ forloop.counter }} of {{ study_result.quiz|length }}</span>
+                                        <span class="quiz-topic-tag">{{ q.topic }}</span>
+                                    </div>
+                                    <h3>{{ q.question }}</h3>
+                                    <div class="quiz-options-list">
+                                        {% for opt_key, opt_val in q.options.items %}
+                                            <label class="quiz-option-label">
+                                                <input type="radio"
+                                                       name="answer_{{ forloop.parentloop.counter0 }}"
+                                                       value="{{ opt_key }}"
+                                                       required>
+                                                <span class="quiz-opt-letter">{{ opt_key }}</span>
+                                                <span class="quiz-opt-text">{{ opt_val }}</span>
+                                            </label>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            {% endfor %}
+
+                            <div style="text-align: center; margin-top: 10px;">
+                                <button type="submit" class="workspace-primary-button" style="padding: 14px 36px; font-size: 16px;">
+                                    Submit Quiz for Scoring
+                                </button>
+                            </div>
+                        </form>
+
+                    <!-- RESULT: Quiz Score & Review -->
+                    {% elif study_result.tool == 'quiz_score' %}
+                        <div class="quiz-results-wrapper">
+                            <div class="quiz-score-summary-banner">
+                                <div class="score-circle">
+                                    <span class="score-num">{{ study_result.score }}</span>
+                                    <span class="score-total">of {{ study_result.total }}</span>
+                                </div>
+                                <div class="score-details">
+                                    <h3>
+                                        {% if study_result.percentage >= 80 %}
+                                            Excellent Performance!
+                                        {% elif study_result.percentage >= 50 %}
+                                            Good Revision Effort!
+                                        {% else %}
+                                            Review Recommended
+                                        {% endif %}
+                                    </h3>
+                                    <p>
+                                        You scored <strong>{{ study_result.score }} out of {{ study_result.total }}</strong>
+                                        ({{ study_result.percentage }}%).
+                                        Review each question and explanation below to solidify your understanding.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="quiz-review-list">
+                                {% for q in study_result.quiz_review %}
+                                    <div class="quiz-review-card {% if q.is_correct %}correct{% else %}incorrect{% endif %}">
+                                        <div class="quiz-question-header">
+                                            <span class="review-badge {% if q.is_correct %}correct{% else %}incorrect{% endif %}">
+                                                {% if q.is_correct %}✓ Correct{% else %}✗ Incorrect{% endif %}
+                                            </span>
+                                            <span class="quiz-topic-tag">{{ q.topic }}</span>
+                                        </div>
+                                        <h3>{{ forloop.counter }}. {{ q.question }}</h3>
+
+                                        <div class="review-options-list">
+                                            {% for opt_key, opt_val in q.options.items %}
+                                                <div class="review-option
+                                                    {% if opt_key == q.answer %}is-correct-target{% endif %}
+                                                    {% if opt_key == q.selected and not q.is_correct %}was-selected-wrong{% endif %}">
+                                                    <strong>{{ opt_key }}.</strong> {{ opt_val }}
+                                                    {% if opt_key == q.answer %}
+                                                        <span style="float: right; color: #065f46; font-weight: 800;">(Correct Answer)</span>
+                                                    {% elif opt_key == q.selected and not q.is_correct %}
+                                                        <span style="float: right; color: #991b1b; font-weight: 800;">(Your Selection)</span>
+                                                    {% endif %}
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+
+                                        {% if q.explanation %}
+                                            <div class="quiz-explanation-box">
+                                                <strong>Why this is correct:</strong> {{ q.explanation }}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                {% endfor %}
+                            </div>
+
+                            <div style="display: flex; gap: 12px; justify-content: center; margin-top: 25px; flex-wrap: wrap;">
+                                <form method="POST" action="{% url 'features' %}#study-result" class="ai-tool-form">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="action" value="use_tool">
+                                    <input type="hidden" name="tool" value="quiz">
+                                    <button type="submit" class="workspace-primary-button">
+                                        Generate Another Quiz
+                                    </button>
+                                </form>
+                                <form method="POST" action="{% url 'features' %}#study-result" class="ai-tool-form">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="action" value="use_tool">
+                                    <input type="hidden" name="tool" value="personalized">
+                                    <button type="submit" class="workspace-secondary-button">
+                                        Build Targeted Revision Plan
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+
+                    <!-- RESULT: AI Flashcards -->
+                    {% elif study_result.tool == 'flashcards' %}
+                        <div class="flashcards-wrapper">
+                            <!-- Deck View -->
+                            <div class="flashcard-deck-container" id="flashcard-deck-view">
+                                <div class="deck-controls-top">
+                                    <span id="card-counter" class="quiz-number-badge">Card 1 of {{ study_result.cards|length }}</span>
+                                    <button type="button" id="toggle-grid-btn" class="result-btn-secondary">
+                                        View All Cards (Grid)
+                                    </button>
+                                </div>
+
+                                <div class="flashcard-deck">
+                                    {% for card in study_result.cards %}
+                                        <div class="single-flashcard" data-index="{{ forloop.counter0 }}">
+                                            <div class="flashcard-inner">
+                                                <span class="flashcard-side-label">Front · Question / Term</span>
+                                                <p class="flashcard-text flashcard-front-text">{{ card.front }}</p>
+                                                <p class="flashcard-text flashcard-back-text">{{ card.back }}</p>
+                                                <span class="flashcard-prompt-hint">Click card to reveal / flip</span>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+
+                                <div class="deck-navigation-bar">
+                                    <button type="button" id="prev-card-btn" class="workspace-secondary-button">
+                                        ◀ Previous
+                                    </button>
+                                    <button type="button" id="flip-card-btn" class="workspace-primary-button">
+                                        Flip Card ↺
+                                    </button>
+                                    <button type="button" id="next-card-btn" class="workspace-secondary-button">
+                                        Next ▶
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Grid View (hidden by default) -->
+                            <div class="flashcards-grid" id="flashcard-grid-view" style="display: none;">
+                                {% for card in study_result.cards %}
+                                    <div class="grid-flashcard">
+                                        <div class="grid-card-front">
+                                            <span class="quiz-number-badge">#{{ forloop.counter }}</span>
+                                            <h4 style="margin: 12px 0 0; font-size: 16px;">{{ card.front }}</h4>
+                                        </div>
+                                        <div class="grid-card-back">
+                                            <span class="review-badge correct">Answer</span>
+                                            <p style="margin: 8px 0 0;">{{ card.back }}</p>
+                                        </div>
+                                        <small style="color: #9ca3af; margin-top: 12px;">Click to flip</small>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                    <!-- RESULT: Notes Summary, Exam Answer, or Study Plan -->
+                    {% else %}
+                        <div class="result-prose-card">
+                            {% if study_result.tool == 'exam_answers' %}
+                                <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 16px;">
+                                    <span class="quiz-number-badge">{{ study_result.marks }} Marks Structure</span>
+                                    <strong style="color: #4b5563;">Topic: {{ study_result.topic }}</strong>
+                                </div>
+                            {% endif %}
+                            <div class="result-prose" id="study-result-body">{{ study_result.text }}</div>
+                        </div>
+                    {% endif %}
+                </section>
+            {% endif %}
+        {% endif %}
+
+        <!-- Previously Uploaded Notes Library -->
+        <section class="saved-documents-section">
+            <div class="section-heading">
+                <p class="workspace-eyebrow">YOUR LIBRARY</p>
+                <h2>Previously uploaded notes</h2>
+                <p>Switch between study materials or remove old files from your workspace.</p>
+            </div>
+
+            {% if documents %}
+                <div class="saved-documents-list">
+                    {% for doc in documents %}
+                        <div class="saved-document-item">
+                            <div>
+                                <h3>
+                                    {{ doc.title }}
+                                    {% if active_document and active_document.id == doc.id %}
+                                        <span class="doc-badge active">Active Document</span>
+                                    {% endif %}
+                                </h3>
+                                <p>
+                                    Uploaded {{ doc.created_at|date:"d M Y, h:i A" }}
+                                    · {{ doc.source_text|length }} characters
+                                    {% if doc.pdf_file %}· PDF attached{% endif %}
+                                </p>
+                            </div>
+                            <div class="saved-doc-actions">
+                                {% if not active_document or active_document.id != doc.id %}
+                                    <form method="POST" action="{% url 'features' %}">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="action" value="select_document">
+                                        <input type="hidden" name="document_id" value="{{ doc.id }}">
+                                        <button type="submit" class="workspace-secondary-button">
+                                            Select
+                                        </button>
+                                    </form>
+                                {% endif %}
+                                <form method="POST" action="{% url 'features' %}" onsubmit="return confirm('Are you sure you want to delete this document from your library?');">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="action" value="delete_document">
+                                    <input type="hidden" name="document_id" value="{{ doc.id }}">
+                                    <button type="submit" class="danger-btn">
+                                        Delete
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="empty-library">
+                    No saved notes yet. Upload your first PDF or paste study notes to get started.
+                </p>
+            {% endif %}
+        </section>
+    </main>
+
+    {% include "cms/footer.html" %}
+
+    <script src="{% static 'js/workspace.js' %}"></script>
+</body>
+</html>

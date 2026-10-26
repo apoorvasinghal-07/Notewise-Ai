@@ -1,0 +1,68 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log In | NoteWise AI</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body class="auth-body">
+    <main class="auth-layout">
+        <section class="auth-visual">
+            <a href="/" class="auth-logo">N <span>NoteWise AI</span></a>
+            <div>
+                <span class="eyebrow">YOUR LEARNING SPACE</span>
+                <h1>Welcome<br>back!</h1>
+                <p>Your notes, your ideas, your progress — together in one place.</p>
+            </div>
+        </section>
+
+        <section class="auth-content">
+            <div class="auth-box">
+                <div class="auth-symbol">N</div>
+                <h2>Sign in to your account</h2>
+                <p class="auth-description">Continue your learning journey.</p>
+
+                {% if messages %}
+                    {% for message in messages %}
+                        <p class="auth-success">{{ message }}</p>
+                    {% endfor %}
+                {% endif %}
+
+                {% if form_errors %}
+                    {% for error in form_errors %}
+                        <p class="auth-error">{{ error }}</p>
+                    {% endfor %}
+                {% endif %}
+
+                <form method="POST" action="/signin/" class="auth-form">
+                    {% csrf_token %}
+                    <label for="login_id">Username or Email</label>
+                    <input type="text" id="login_id" name="login_id"
+                           value="{{ login_id|default:'' }}"
+                           placeholder="Enter your username or email"
+                           autocomplete="username" required>
+
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password"
+                           placeholder="Enter your password"
+                           autocomplete="current-password" required>
+
+                    <label class="remember-row">
+                        <input type="checkbox" name="remember_me">
+                        Remember me
+                    </label>
+
+                    <button class="auth-submit" type="submit">Sign In →</button>
+                </form>
+
+                <p class="auth-bottom">Don't have an account?
+                    <a href="/signup/">Create account</a>
+                </p>
+                <a href="/" class="back-home">← Back to Home</a>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
